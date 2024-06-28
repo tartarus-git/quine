@@ -21,10 +21,11 @@ void print_quine_output(const char * const output_template) {\n\
 	}\n\
 }\n\
 \n\
-int main() {\n\
+int main(void) {\n\
 	print_quine_output(this_source_code);\n\
 	return EXIT_SUCCESS;\n\
-}\n";
+}\n\
+";
 
 void print_quine_output(const char * const output_template) {
 	for (const char *ptr = output_template; *ptr != '\0'; ptr++) {
