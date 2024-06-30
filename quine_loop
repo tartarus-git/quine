@@ -1,21 +1,35 @@
 #!/bin/bash
 
+source_code_hash=$(cat quine.c | sha256sum)
+
 clang-15 -Wall -Wextra quine.c -o quine &&
 echo "compiled original quine source" &&
 {
 	./quine > gen_quine.c || {
-		echo "quine_loop: ERROR: original quine execution failed" 1>&2
+		echo "quine_loop: ERROR: original quine execution failed" 1>&2 &&
 		exit 1
 	}
 } &&
-echo "generated next source iteration with compiled original quine"
+echo "generated next source iteration with compiled original quine" &&
+
+check_hash() {
+	new_source_code_hash=$(cat gen_quine.c | sha256sum)
+	if [ "$source_code_hash" != "$new_source_code_hash" ]
+	then
+		echo "quine_loop: ERROR: new source code hash does not match old source code hash, QUINE BROKEN!" 1>&2 &&
+		exit 1
+	fi
+} &&
+
+check_hash
 
 while [ "$?" == 0 ]
 do
 	clang-15 -Wall -Wextra gen_quine.c -o gen_quine &&
 	echo "compiled quine" &&
 	./gen_quine > gen_quine.c &&
-	echo "generated next source iteration with compiled quine"
+	echo "generated next source iteration with compiled quine" &&
+	check_hash
 done
 
 echo "quine_loop: ERROR: something went wrong in the loop" 1>&2 &&
