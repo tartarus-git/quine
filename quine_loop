@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source_code_hash=$(cat quine.c | sha256sum)
+source_code_hash=$(cat quine.c | sha256sum) &&
 
 clang-15 -Wall -Wextra quine.c -o quine &&
 echo "compiled original quine source" &&
@@ -21,7 +21,7 @@ check_hash() {
 	fi
 } &&
 
-check_hash
+check_hash &&
 
 while [ "$?" == 0 ]
 do
@@ -30,7 +30,7 @@ do
 	./gen_quine > gen_quine.c &&
 	echo "generated next source iteration with compiled quine" &&
 	check_hash
-done
+done &&
 
 echo "quine_loop: ERROR: something went wrong in the loop" 1>&2 &&
 exit 1
