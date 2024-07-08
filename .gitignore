@@ -4,3 +4,6 @@ gen_quine
 iter_quine
 gen_iter_quine.c
 gen_iter_quine
+tiny_iter_quine
+gen_tiny_iter_quine.c
+gen_tiny_iter_quine

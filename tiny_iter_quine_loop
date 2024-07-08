@@ -1,0 +1,20 @@
+#!/bin/bash
+
+clang-15 -Wall -Wextra tiny_iter_quine.c -o tiny_iter_quine &&
+./tiny_iter_quine > gen_tiny_iter_quine.c &&
+cat gen_tiny_iter_quine.c &&
+echo &&
+echo &&
+echo &&
+echo
+
+while [ "$?" == 0 ]
+do
+	clang-15 -Wall -Wextra gen_tiny_iter_quine.c -o gen_tiny_iter_quine &&
+	./gen_tiny_iter_quine > gen_tiny_iter_quine.c &&
+	cat gen_tiny_iter_quine.c &&
+	echo &&
+	echo &&
+	echo &&
+	echo
+done
