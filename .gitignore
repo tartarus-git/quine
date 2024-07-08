@@ -1,3 +1,6 @@
 quine
 gen_quine.c
 gen_quine
+iter_quine
+gen_iter_quine.c
+gen_iter_quine

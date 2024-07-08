@@ -33,7 +33,7 @@ void print_quine_output(const char * const output_template)\n\
 \n\
 		if (*ptr == '@' && *(ptr + 1) == '@')\n\
 		{\n\
-			printf(\"%ull\", @@ull + 1);\n\
+			printf(\"%llu\", @@ull + 1);\n\
 			ptr++;\n\
 			continue;\n\
 		}\n\
@@ -71,7 +71,7 @@ void print_quine_output(const char * const output_template)
 
 		if (*ptr == '@' && *(ptr + 1) == '@')
 		{
-			printf("%ull", 0ull + 1);
+			printf("%llu", 0ull + 1);
 			ptr++;
 			continue;
 		}
