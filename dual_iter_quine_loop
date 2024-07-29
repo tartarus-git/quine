@@ -1,0 +1,65 @@
+#!/bin/bash
+
+function gen_source_sha() {
+	if [ ! "$#" -eq 1 ]
+	then
+		echo "ERROR: gen_source_sha() must be called with exactly 1 argument (source_path)!" 1>&2
+		exit 1
+	fi
+	echo `cat "$1" | sed "s/QUINE ITERATION: [0-9][0-9]*/QUINE ITERATION: 0/g" \
+		       | sed "s/[0-9][0-9]*ull/0ull/g" \
+		       | sed "s/str([0-9][0-9]*/str(0/g" | sha256sum`
+}
+
+tcc -Wall -Wextra -run dual_iter_quine.c > gen_dual_iter_quine.py &&
+cat gen_dual_iter_quine.py &&
+echo &&
+echo &&
+echo &&
+echo &&
+py_sha="$(gen_source_sha gen_dual_iter_quine.py)" &&
+
+python3 gen_dual_iter_quine.py > gen_dual_iter_quine.c &&
+cat gen_dual_iter_quine.c &&
+echo &&
+echo &&
+echo &&
+echo &&
+c_sha="$(gen_source_sha gen_dual_iter_quine.c)" &&
+
+if [ "$c_sha" != "$(gen_source_sha dual_iter_quine.c)" ]
+then
+	echo "ERROR: c versions aren't identical!" 1>&2
+	exit 1
+fi
+
+while [ "$?" == 0 ]
+do
+	tcc -Wall -Wextra -run gen_dual_iter_quine.c > gen_dual_iter_quine.py &&
+	cat gen_dual_iter_quine.py &&
+	echo &&
+	echo &&
+	echo &&
+	echo &&
+	new_py_sha="$(gen_source_sha gen_dual_iter_quine.py)" &&
+	if [ "$py_sha" != "$new_py_sha" ]
+	then
+		echo "ERROR: python versions aren't identical!" 1>&2
+		exit 1
+	fi &&
+	py_sha="$new_py_sha" &&
+
+	python3 gen_dual_iter_quine.py > gen_dual_iter_quine.c &&
+	cat gen_dual_iter_quine.c &&
+	echo &&
+	echo &&
+	echo &&
+	echo &&
+	new_c_sha="$(gen_source_sha gen_dual_iter_quine.c)" &&
+	if [ "$c_sha" != "$new_c_sha" ]
+	then
+		echo "ERROR: c versions aren't identical!" 1>&2
+		exit 1
+	fi &&
+	c_sha="$new_c_sha"
+done

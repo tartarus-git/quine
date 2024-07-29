@@ -7,3 +7,8 @@ gen_iter_quine
 tiny_iter_quine
 gen_tiny_iter_quine.c
 gen_tiny_iter_quine
+
+# TODO: Use tcc for everything, eliminating the need for all the executables in this gitignore.
+
+gen_dual_iter_quine.c
+gen_dual_iter_quine.py
