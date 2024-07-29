@@ -12,3 +12,5 @@ gen_tiny_iter_quine
 
 gen_dual_iter_quine.c
 gen_dual_iter_quine.py
+gen_py_quine.py
+new_gen_py_quine.py

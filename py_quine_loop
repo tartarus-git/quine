@@ -1,0 +1,32 @@
+#!/bin/bash
+
+python3 py_quine.py > gen_py_quine.py &&
+cat gen_py_quine.py &&
+echo &&
+echo &&
+echo &&
+echo &&
+source_sha=$(cat gen_py_quine.py | sha256sum) &&
+if [ "$source_sha" != "$(cat py_quine.py | sha256sum)" ]
+then
+	echo "ERROR: quine does NOT produce identical source!" 1>&2
+	exit 1
+fi
+
+while [ "$?" == 0 ]
+do
+	python3 gen_py_quine.py > new_gen_py_quine.py &&
+	cat new_gen_py_quine.py &&
+	echo &&
+	echo &&
+	echo &&
+	echo &&
+	new_source_sha=$(cat new_gen_py_quine.py | sha256sum) &&
+	if [ "$source_sha" != "$new_source_sha" ]
+	then
+		echo "ERROR: quine does NOT produce identical source!" 1>&2
+		exit 1
+	fi &&
+	source_sha="$new_source_sha" &&
+	cp new_gen_py_quine.py gen_py_quine.py
+done
